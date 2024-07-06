@@ -1,6 +1,7 @@
 import liff from "@line/liff";
 import { QueryClientProvider, useSuspenseQuery } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "@/components/ui/sonner";
 import { getInitialClientState } from "@/lib/client";
 
 const liffId = import.meta.env.VITE_LIFF_ID;
@@ -23,6 +24,7 @@ export function Provider({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={getInitialClientState()}>
       {children}
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster />
     </QueryClientProvider>
   );
 }
