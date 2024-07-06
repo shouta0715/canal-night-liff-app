@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
 import liff from "@line/liff";
-import "./App.css";
+import { useEffect, useState } from "react";
+import "@/global.css";
+import { Provider } from "@/providers";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -9,7 +10,7 @@ function App() {
   useEffect(() => {
     liff
       .init({
-        liffId: import.meta.env.VITE_LIFF_ID
+        liffId: import.meta.env.VITE_LIFF_ID,
       })
       .then(() => {
         setMessage("LIFF init succeeded.");
@@ -21,8 +22,9 @@ function App() {
   });
 
   return (
-    <div className="App">
+    <Provider>
       <h1>create-liff-app</h1>
+
       {message && <p>{message}</p>}
       {error && (
         <p>
@@ -31,12 +33,12 @@ function App() {
       )}
       <a
         href="https://developers.line.biz/ja/docs/liff/"
-        target="_blank"
         rel="noreferrer"
+        target="_blank"
       >
         LIFF Documentation
       </a>
-    </div>
+    </Provider>
   );
 }
 
