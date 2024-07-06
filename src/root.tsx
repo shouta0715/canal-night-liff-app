@@ -1,6 +1,7 @@
 import liff from "@line/liff";
 import { useEffect, useState } from "react";
 import "@/global.css";
+import { Provider } from "@/providers";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -21,7 +22,7 @@ function App() {
   });
 
   return (
-    <div>
+    <Provider>
       <h1>create-liff-app</h1>
 
       {message && <p>{message}</p>}
@@ -37,7 +38,7 @@ function App() {
       >
         LIFF Documentation
       </a>
-    </div>
+    </Provider>
   );
 }
 
