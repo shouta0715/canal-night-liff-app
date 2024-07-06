@@ -1,6 +1,6 @@
 import liff from "@line/liff";
 import { useEffect, useState } from "react";
-import "./App.css";
+import "@/global.css";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -21,8 +21,9 @@ function App() {
   });
 
   return (
-    <div className="App">
+    <div>
       <h1>create-liff-app</h1>
+
       {message && <p>{message}</p>}
       {error && (
         <p>

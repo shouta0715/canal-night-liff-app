@@ -38,3 +38,7 @@ next-env.d.ts
 # files 
 public
 storybook-static
+
+# config
+*.config.js
+*.config.ts
