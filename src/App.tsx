@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import liff from "@line/liff";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     liff
       .init({
-        liffId: import.meta.env.VITE_LIFF_ID
+        liffId: import.meta.env.VITE_LIFF_ID,
       })
       .then(() => {
         setMessage("LIFF init succeeded.");
@@ -31,8 +31,8 @@ function App() {
       )}
       <a
         href="https://developers.line.biz/ja/docs/liff/"
-        target="_blank"
         rel="noreferrer"
+        target="_blank"
       >
         LIFF Documentation
       </a>
