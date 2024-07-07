@@ -27,7 +27,7 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
     >
       <motion.div
         ref={scope}
-        className="relative mx-auto size-72 cursor-grab overflow-hidden rounded-full border-2 active:cursor-grabbing md:size-96"
+        className="relative mx-auto size-[300px] cursor-grab overflow-hidden rounded-full border-2 active:cursor-grabbing"
         drag="y"
         onDrag={onDrag}
         onDragEnd={onDragEnd}

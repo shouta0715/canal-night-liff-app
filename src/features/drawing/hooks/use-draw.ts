@@ -180,7 +180,7 @@ export function useDraw({ setResult }: DrawingCanvasProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const size = Math.min(canvas.width, canvas.height);
+    const size = 300;
     const newCanvas = document.createElement("canvas");
     newCanvas.width = size;
     newCanvas.height = size;

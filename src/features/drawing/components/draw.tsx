@@ -34,7 +34,7 @@ export function Draw({ setResult }: DrawingCanvasProps) {
     <div className="p-5">
       <div
         ref={parentRef}
-        className="relative mx-auto size-72 overflow-hidden rounded-full border-2 md:size-96"
+        className="relative mx-auto size-[300px] overflow-hidden rounded-full border-2"
       >
         <video
           ref={videoRef}
