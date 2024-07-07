@@ -24,7 +24,7 @@ export function Provider({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={getInitialClientState()}>
       {children}
       <ReactQueryDevtools initialIsOpen={false} />
-      <Toaster />
+      <Toaster closeButton position="top-right" />
     </QueryClientProvider>
   );
 }

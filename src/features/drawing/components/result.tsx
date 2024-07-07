@@ -10,40 +10,38 @@ type ResultCanvasProps = {
 export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
   const {
     ref,
-    imageWrapperRef,
-    animationControls,
+    d,
+    scope,
     onReset,
     onDragEnd,
-    onDragStart,
+    onDrag,
     isPending,
     isSuccess,
+    width,
   } = useResult({ result });
 
   return (
-    <div className="flex h-dvh flex-col items-center justify-center">
-      <div
-        ref={ref}
-        className="w-5/6 overflow-hidden rounded-md border-2 py-40"
+    <div
+      ref={ref}
+      className="relative flex h-dvh flex-col items-center justify-center overflow-hidden"
+    >
+      <motion.div
+        ref={scope}
+        className="relative mx-auto size-72 cursor-grab overflow-hidden rounded-full border-2 active:cursor-grabbing md:size-96"
+        drag="y"
+        onDrag={onDrag}
+        onDragEnd={onDragEnd}
       >
-        <motion.div
-          ref={imageWrapperRef}
-          animate={animationControls}
-          className="relative mx-auto size-72 overflow-hidden rounded-full border-2 md:size-96"
-          drag="y"
-          onDragEnd={onDragEnd}
-          onDragStart={onDragStart}
-        >
-          <img
-            alt="Drawing result"
-            className="pointer-events-none absolute inset-0 size-full"
-            sizes="(min-width: 640px) 640px, 100vw"
-            src={URL.createObjectURL(result)}
-          />
-        </motion.div>
-      </div>
+        <img
+          alt="Drawing result"
+          className="pointer-events-none absolute inset-0 size-full"
+          sizes="(min-width: 640px) 640px, 100vw"
+          src={URL.createObjectURL(result)}
+        />
+      </motion.div>
 
-      <div className="mt-10 flex items-center gap-6">
-        <Button disabled={isPending || isSuccess} onClick={onReset}>
+      <div className="absolute right-10 top-0 mt-10 flex items-center gap-6">
+        <Button disabled={isPending} onClick={onReset}>
           {isPending ? "アップロード中" : "元の位置に戻す"}
         </Button>
         <Button
@@ -54,6 +52,18 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
           {isPending ? "アップロード中" : "書き直す"}
         </Button>
       </div>
+      <motion.svg
+        className="absolute inset-0 top-[calc(50%+18rem)] -z-10"
+        viewBox={`0 0 ${width} 1000`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <motion.path
+          className="w-full"
+          d={d}
+          fill="transparent"
+          stroke="black"
+        />
+      </motion.svg>
 
       {isSuccess && (
         <Button className="mt-6" onClick={onClear}>

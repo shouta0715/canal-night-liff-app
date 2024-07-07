@@ -1,6 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import { DragHandlers, useAnimationControls } from "framer-motion";
-import { useRef } from "react";
+import {
+  DragHandlers,
+  useAnimate,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -25,14 +30,31 @@ const postBlob = async (blob: Blob) => {
 
 export function useResult({ result }: UseResultProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const imageWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  const animationControls = useAnimationControls();
+  const [scope, animate] = useAnimate<HTMLDivElement>();
+
+  const [width, setWidth] = useState(window.innerWidth);
+  const y = useMotionValue(0);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const d = useTransform(y, (v) => {
+    const controlPoint1X = width / 2;
+    const controlPoint2X = width / 2;
+    const controlPointY = 25 + v;
+
+    return `M0,25 C${controlPoint1X},${controlPointY} ${controlPoint2X},${controlPointY} ${width},25`;
+  });
 
   const onReset = () => {
-    if (!ref.current || !imageWrapperRef.current) return;
+    if (!ref.current || !scope.current) return;
 
-    animationControls.start({
+    animate(scope.current, {
       y: 0,
     });
   };
@@ -48,35 +70,38 @@ export function useResult({ result }: UseResultProps) {
     },
   });
 
-  const dragStartY = useRef(0);
+  const onDragEnd: DragHandlers["onDragEnd"] = async (_, i) => {
+    y.set(0);
+    const offset = i.offset.y;
+    const wrapperHeight = ref.current?.clientHeight ?? 0;
 
-  const onDragEnd = () => {
-    if (!ref.current || !imageWrapperRef.current) return;
+    if (offset < wrapperHeight / 3) {
+      animate(scope.current, { y: 0 });
+    } else {
+      await animate(scope.current, {
+        y: -offset * 2,
+      });
 
-    const imageRect = imageWrapperRef.current.getBoundingClientRect();
-
-    if (Math.abs(dragStartY.current - imageRect.top) > 500) {
       if (isPending || isSuccess) return;
 
-      mutateAsync(result);
-    } else {
-      onReset();
+      await mutateAsync(result);
     }
   };
 
-  const onDragStart: DragHandlers["onDragStart"] = (_, info) => {
-    if (!info.point) return;
-    dragStartY.current = info.point.y;
+  const onDrag: DragHandlers["onDrag"] = (_, info) => {
+    if (info.offset.y < 0) return;
+    y.set(info.offset.y);
   };
 
   return {
     ref,
-    imageWrapperRef,
-    animationControls,
+    scope,
     isPending,
     isSuccess,
     onReset,
     onDragEnd,
-    onDragStart,
+    onDrag,
+    d,
+    width,
   };
 }
