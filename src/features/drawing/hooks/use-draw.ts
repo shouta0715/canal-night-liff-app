@@ -17,7 +17,7 @@ export function useDraw({ setResult }: DrawingCanvasProps) {
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const [status, setStatus] = useState<Status>("pen");
-  const [pen, setPen] = useState<Pen>({ color: "black", size: 5 });
+  const [pen, setPen] = useState<Pen>({ color: "#FFD700", size: 5 });
   const [isDrawing, setIsDrawing] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -187,6 +187,7 @@ export function useDraw({ setResult }: DrawingCanvasProps) {
     const newCtx = newCanvas.getContext("2d");
     if (!newCtx) return;
 
+    // ボールの描画
     newCtx.beginPath();
     newCtx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2, false);
     newCtx.clip();
@@ -197,7 +198,24 @@ export function useDraw({ setResult }: DrawingCanvasProps) {
       canvas.width,
       canvas.height
     );
-    newCtx.strokeStyle = "#d5e2ee";
+
+    // 発光効果の追加
+    newCtx.filter = "blur(10px)";
+
+    newCtx.globalCompositeOperation = "lighter";
+
+    newCtx.strokeStyle = "#FFD700";
+    newCtx.lineWidth = 15; // 発光の幅
+    newCtx.beginPath();
+    newCtx.arc(size / 2, size / 2, size / 2 - 10, 0, Math.PI * 2, false); // 発光の位置
+    newCtx.stroke();
+
+    // 描画モードとフィルターを元に戻す
+    newCtx.filter = "none";
+    newCtx.globalCompositeOperation = "source-over";
+
+    // 枠線の描画
+    newCtx.strokeStyle = "#FFD700";
     newCtx.lineWidth = 2;
     newCtx.beginPath();
     newCtx.arc(size / 2, size / 2, size / 2 - 5, 0, Math.PI * 2, false);
