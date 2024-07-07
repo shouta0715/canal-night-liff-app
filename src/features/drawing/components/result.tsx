@@ -23,7 +23,7 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
   return (
     <div
       ref={ref}
-      className="relative flex h-[70vh] flex-col items-center justify-center overflow-hidden"
+      className="relative flex h-dvh flex-col items-center justify-center overflow-hidden"
     >
       <motion.div
         ref={scope}
