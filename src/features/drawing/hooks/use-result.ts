@@ -18,7 +18,7 @@ const postBlob = async (blob: Blob) => {
   const formData = new FormData();
   formData.append("image", blob);
 
-  const response = await fetch(`${API_URL}/river-ball/images/upload`, {
+  const response = await fetch(`${API_URL}/conveyor-belt-sushi/images/upload`, {
     method: "POST",
     body: formData,
   });
