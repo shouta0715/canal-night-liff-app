@@ -1,6 +1,5 @@
 import liff from "@line/liff";
 import { QueryClientProvider, useSuspenseQuery } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "@/components/ui/sonner";
 import { getInitialClientState } from "@/lib/client";
 
@@ -23,7 +22,6 @@ export function Provider({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={getInitialClientState()}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} />
       <Toaster closeButton position="top-right" />
     </QueryClientProvider>
   );

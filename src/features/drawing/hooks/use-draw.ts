@@ -17,7 +17,7 @@ export function useDraw({ setResult }: DrawingCanvasProps) {
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const [status, setStatus] = useState<Status>("pen");
-  const [pen, setPen] = useState<Pen>({ color: "#FFD700", size: 5 });
+  const [pen, setPen] = useState<Pen>({ color: "#000", size: 5 });
   const [isDrawing, setIsDrawing] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -200,26 +200,26 @@ export function useDraw({ setResult }: DrawingCanvasProps) {
     );
 
     // 発光効果の追加
-    newCtx.filter = "blur(10px)";
+    // newCtx.filter = "blur(10px)";
 
-    newCtx.globalCompositeOperation = "lighter";
+    // newCtx.globalCompositeOperation = "lighter";
 
-    newCtx.strokeStyle = "#FFD700";
-    newCtx.lineWidth = 15; // 発光の幅
+    // newCtx.strokeStyle = "#FFD700";
+    // newCtx.lineWidth = 15; // 発光の幅
     newCtx.beginPath();
-    newCtx.arc(size / 2, size / 2, size / 2 - 10, 0, Math.PI * 2, false); // 発光の位置
-    newCtx.stroke();
+    // newCtx.arc(size / 2, size / 2, size / 2 - 10, 0, Math.PI * 2, false); // 発光の位置
+    // newCtx.stroke();
 
     // 描画モードとフィルターを元に戻す
     newCtx.filter = "none";
     newCtx.globalCompositeOperation = "source-over";
 
     // 枠線の描画
-    newCtx.strokeStyle = "#FFD700";
-    newCtx.lineWidth = 2;
-    newCtx.beginPath();
-    newCtx.arc(size / 2, size / 2, size / 2 - 5, 0, Math.PI * 2, false);
-    newCtx.stroke();
+    // newCtx.strokeStyle = "#FFD700";
+    // newCtx.lineWidth = 2;
+    // newCtx.beginPath();
+    // newCtx.arc(size / 2, size / 2, size / 2 - 5, 0, Math.PI * 2, false);
+    // newCtx.stroke();
 
     newCanvas.toBlob((blob) => {
       setResult(blob);
