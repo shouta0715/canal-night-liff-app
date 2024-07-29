@@ -1,9 +1,6 @@
-import { Camera, Eraser, Pen, Save, StopCircle, Trash } from "lucide-react";
+import { Eraser, Pen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { useDraw } from "@/features/drawing/hooks/use-draw";
+import { useDrawing } from "@/features/drawing/hooks/use-draw";
 import { cn } from "@/lib/utils";
 
 type DrawingCanvasProps = {
@@ -12,152 +9,96 @@ type DrawingCanvasProps = {
 
 export function Draw({ setResult }: DrawingCanvasProps) {
   const {
-    canvasRef,
-    parentRef,
+    sketchRef,
     videoRef,
-    status,
-    pen,
-    setStatus,
-    setPen,
-    onClearHandler,
-    onCaptureHandler,
-    onCaptureStopHandler,
-    onDrawStartHandler,
-    onDrawingHandler,
-    onTouchDrawingHandler,
-    onTouchStartHandler,
-    onSaveHandler,
-    onStopDrawingHandler,
-  } = useDraw({ setResult });
+    setColor,
+    setTool,
+    handleTakePhoto,
+    changeFacingMode,
+    changeCameraMode,
+    isCameraMode,
+    tool,
+    saveCanvas,
+  } = useDrawing({ setResult });
 
   return (
-    <div className="p-5">
-      <div
-        ref={parentRef}
-        className="relative mx-auto size-[300px] overflow-hidden rounded-full border-2"
-      >
+    <div className="flex flex-col p-5">
+      <div className="grid items-center justify-center gap-4">
+        <div className="flex items-center justify-between space-x-2">
+          <Button
+            className="flex items-center gap-2"
+            disabled={isCameraMode}
+            onClick={() => setTool("pen")}
+            type="button"
+            variant={tool === "pen" ? "default" : "outline"}
+          >
+            <Pen size={16} />
+            ペン
+          </Button>
+          <Button
+            className="flex items-center gap-2"
+            disabled={isCameraMode}
+            onClick={() => setTool("eraser")}
+            type="button"
+            variant={tool === "eraser" ? "default" : "outline"}
+          >
+            <Eraser size={16} />
+            消しゴム
+          </Button>
+          <input
+            className="size-12"
+            disabled={tool === "eraser"}
+            onChange={(e) => setColor(e.target.value)}
+            type="color"
+          />
+        </div>
+        {isCameraMode && (
+          <div className="flex items-center justify-between space-x-2">
+            <Button onClick={handleTakePhoto} type="button">
+              写真を撮る
+            </Button>
+            <Button onClick={changeFacingMode} type="button">
+              カメラの向きを変える
+            </Button>
+          </div>
+        )}
+
+        <div>
+          <Button
+            className="w-full"
+            onClick={changeCameraMode}
+            type="button"
+            variant={isCameraMode ? "default" : "outline"}
+          >
+            {isCameraMode
+              ? "手書きモードに切り替える"
+              : "カメラモードに切り替える"}
+          </Button>
+        </div>
+
+        <Button disabled={isCameraMode} onClick={saveCanvas} type="button">
+          保存して次へ
+        </Button>
+      </div>
+
+      <div className="relative mx-auto mt-10 aspect-square size-[300px] flex-1 overflow-hidden rounded-full border-2">
         <video
           ref={videoRef}
           autoPlay
           className={cn(
-            status === "capture" ? "absolute inset-0 size-full" : "hidden"
+            "size-full object-cover absolute inset-0 bg-white",
+            isCameraMode ? "z-20" : "-z-10"
           )}
-        >
-          <track kind="captions" />
-        </video>
-
-        <canvas
-          ref={canvasRef}
-          onMouseDown={onDrawStartHandler}
-          onMouseLeave={onStopDrawingHandler}
-          onMouseMove={onDrawingHandler}
-          onMouseUp={onStopDrawingHandler}
-          onTouchEnd={onStopDrawingHandler}
-          onTouchMove={onTouchDrawingHandler}
-          onTouchStart={onTouchStartHandler}
+          muted
+          playsInline
         />
-      </div>
-
-      <div className="mt-10 flex items-center justify-center gap-10">
-        <div className="flex flex-col items-center justify-center ">
-          <Label htmlFor="pen-color">ペンの色</Label>
-          <Input
-            className="mt-4 size-20"
-            disabled={status === "capture"}
-            id="pen-color"
-            onChange={(e) => setPen({ ...pen, color: e.target.value })}
-            type="color"
-            value={pen.color}
-          />
-        </div>
-        <div className="flex w-60 flex-col items-center justify-center gap-2">
-          <Label
-            className="flex items-center justify-between"
-            htmlFor="pen-size"
-          >
-            {
-              {
-                pen: "ペンの太さ",
-                eraser: "消しゴムの太さ",
-                capture: "キャプチャ中",
-              }[status]
-            }
-          </Label>
-          <Slider
-            className="max-w-xs"
-            color={pen.color}
-            defaultValue={[4]}
-            disabled={status === "capture"}
-            max={10}
-            onValueChange={(value) => setPen({ ...pen, size: value[0] })}
-            step={2}
-          />
-        </div>
-      </div>
-      <div className="mt-6 flex justify-center gap-6">
-        <Button
-          className={cn(status === "pen" && "border-primary border-2")}
-          onClick={() => {
-            if (status === "capture") onCaptureStopHandler();
-            setStatus("pen");
-          }}
-          size="icon"
-          type="button"
-          variant="outline"
-        >
-          <span className="sr-only">ペン</span>
-          <Pen size={24} />
-        </Button>
-        <Button
-          className={cn(status === "eraser" && "border-primary border-2")}
-          onClick={() => {
-            if (status === "capture") onCaptureStopHandler();
-            setStatus("eraser");
-          }}
-          size="icon"
-          type="button"
-          variant="outline"
-        >
-          <span className="sr-only">消しゴム</span>
-          <Eraser size={24} />
-        </Button>
-
-        <Button
-          onClick={() => {
-            if (status === "capture") {
-              onCaptureStopHandler();
-            } else {
-              onCaptureHandler();
-            }
-          }}
-          size="icon"
-          type="button"
-          variant={status === "capture" ? "destructive" : "outline"}
-        >
-          <span className="sr-only">キャプチャ</span>
-          {status === "capture" ? (
-            <StopCircle size={24} />
-          ) : (
-            <Camera size={24} />
+        <div
+          ref={sketchRef}
+          className={cn(
+            "size-full [&>canvas]:object-cover inset-0 absolute [&>canvas]:size-full",
+            isCameraMode ? "-z-20" : "z-10"
           )}
-        </Button>
-
-        <Button
-          onClick={onClearHandler}
-          size="icon"
-          type="button"
-          variant="destructive"
-        >
-          <span className="sr-only">初期化する</span>
-          <Trash size={24} />
-        </Button>
-      </div>
-
-      <div className="mt-10 flex w-full flex-col items-center justify-center">
-        <Button className="gap-4" onClick={onSaveHandler} type="button">
-          <span className="font-bold">保存する</span>
-          <Save size={24} />
-        </Button>
+        />
       </div>
     </div>
   );

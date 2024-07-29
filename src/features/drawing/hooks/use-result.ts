@@ -1,11 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import {
-  DragHandlers,
-  useAnimate,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { DragHandlers, useAnimate, useMotionValue } from "framer-motion";
+import { useRef } from "react";
 import { toast } from "sonner";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -18,7 +13,7 @@ const postBlob = async (blob: Blob) => {
   const formData = new FormData();
   formData.append("image", blob);
 
-  const response = await fetch(`${API_URL}/conveyor-belt-sushi/images/upload`, {
+  const response = await fetch(`${API_URL}/canal-night/images/upload`, {
     method: "POST",
     body: formData,
   });
@@ -33,23 +28,7 @@ export function useResult({ result }: UseResultProps) {
 
   const [scope, animate] = useAnimate<HTMLDivElement>();
 
-  const [width, setWidth] = useState(window.innerWidth);
   const y = useMotionValue(0);
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const d = useTransform(y, (v) => {
-    const controlPoint1X = width / 2;
-    const controlPoint2X = width / 2;
-    const controlPointY = 25 + v;
-
-    return `M0,25 C${controlPoint1X},${controlPointY} ${controlPoint2X},${controlPointY} ${width},25`;
-  });
 
   const onReset = () => {
     if (!ref.current || !scope.current) return;
@@ -101,7 +80,5 @@ export function useResult({ result }: UseResultProps) {
     onReset,
     onDragEnd,
     onDrag,
-    d,
-    width,
   };
 }
