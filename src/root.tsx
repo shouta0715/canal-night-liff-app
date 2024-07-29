@@ -3,7 +3,7 @@ import "@/global.css";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { DrawingApp } from "@/features/drawing/components";
-import { Provider } from "@/providers";
+import { LineAuthProvider, Provider } from "@/providers";
 
 function App() {
   return (
@@ -15,9 +15,9 @@ function App() {
           fallback={<p>LineAuthProvider failed. Please refresh the page.</p>}
         >
           <Suspense fallback={<p>Loading...</p>}>
-            {/* <LineAuthProvider> */}
-            <DrawingApp />
-            {/* </LineAuthProvider> */}
+            <LineAuthProvider>
+              <DrawingApp />
+            </LineAuthProvider>
           </Suspense>
         </ErrorBoundary>
       </Provider>
