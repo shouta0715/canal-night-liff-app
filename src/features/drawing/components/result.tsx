@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowBigDownDash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useResult } from "@/features/drawing/hooks/use-result";
 
@@ -17,6 +18,8 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
       ref={ref}
       className="relative flex h-dvh flex-col items-center justify-center overflow-hidden"
     >
+      <ArrowBigDownDash className="absolute right-4 top-1/2 size-20" />
+
       <motion.div
         ref={scope}
         className="relative mx-auto size-[300px] cursor-grab overflow-hidden rounded-full border-2 active:cursor-grabbing"
@@ -31,12 +34,13 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
           src={URL.createObjectURL(result)}
         />
       </motion.div>
-      <p className="absolute right-20 flex flex-row-reverse text-xl font-bold [writing-mode:vertical-rl]">
-        ひっぱりハンティング
-        <br />
-        ボールをしたにひっぱってボールをとばせ！
-      </p>
+
       <div className="absolute right-10 top-0 mt-10 flex items-center gap-6">
+        <p className="text-sm font-bold">
+          ひっぱりハンティング！
+          <br />
+          ボールをしたにひっぱってボールをとばせ！
+        </p>
         <Button
           disabled={isPending || isSuccess}
           onClick={onClear}
