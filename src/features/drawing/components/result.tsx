@@ -18,7 +18,7 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
       ref={ref}
       className="relative flex h-dvh flex-col items-center justify-center overflow-hidden"
     >
-      <ArrowBigDownDash className="absolute right-4 top-1/2 size-20" />
+      <ArrowBigDownDash className="absolute bottom-4 left-1/2 size-20 -translate-x-1/2" />
 
       <motion.div
         ref={scope}
@@ -36,9 +36,7 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
       </motion.div>
 
       <div className="absolute right-10 top-0 mt-10 flex items-center gap-6">
-        <p className="text-sm font-bold">
-          ひっぱりハンティング！
-          <br />
+        <p className="text-xs font-bold">
           ボールをしたにひっぱってボールをとばせ！
         </p>
         <Button
