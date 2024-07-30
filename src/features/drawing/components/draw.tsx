@@ -83,7 +83,7 @@ export function Draw({ setResult }: DrawingCanvasProps) {
         )}
       </div>
 
-      <div className="relative mx-auto mt-10 aspect-square size-[300px] flex-1 overflow-hidden rounded-full border-2">
+      <div className="relative mx-auto mt-10 aspect-square size-[300px] max-w-full flex-1 overflow-hidden rounded-full border-2">
         <video
           ref={videoRef}
           autoPlay
