@@ -31,7 +31,11 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
           src={URL.createObjectURL(result)}
         />
       </motion.div>
-
+      <p className="absolute right-20 flex flex-row-reverse text-xl font-bold [writing-mode:vertical-rl]">
+        ひっぱりハンティング
+        <br />
+        ボールをしたにひっぱってボールをとばせ！
+      </p>
       <div className="absolute right-10 top-0 mt-10 flex items-center gap-6">
         <Button
           disabled={isPending || isSuccess}
@@ -41,7 +45,6 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
           {isPending ? "アップロード中" : "書き直す"}
         </Button>
       </div>
-
       {isSuccess && (
         <Button className="mt-6" onClick={onClear}>
           もう一度書く

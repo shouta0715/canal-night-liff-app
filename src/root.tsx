@@ -8,13 +8,21 @@ import { LineAuthProvider, Provider } from "@/providers";
 function App() {
   return (
     <ErrorBoundary
-      fallback={<p>Something went wrong. Please refresh the page.</p>}
+      fallback={
+        <p className="text-center">
+          予期せぬエラーが発生しました。ページをリロードしてください。
+        </p>
+      }
     >
       <Provider>
         <ErrorBoundary
-          fallback={<p>LineAuthProvider failed. Please refresh the page.</p>}
+          fallback={
+            <p className="text-center">
+              予期せぬエラーが発生しました。ページをリロードしてください。
+            </p>
+          }
         >
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<p className="text-center">Lineに接続中...</p>}>
             <LineAuthProvider>
               <DrawingApp />
             </LineAuthProvider>
