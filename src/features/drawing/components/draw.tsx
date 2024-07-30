@@ -76,9 +76,11 @@ export function Draw({ setResult }: DrawingCanvasProps) {
           </Button>
         </div>
 
-        <Button disabled={isCameraMode} onClick={saveCanvas} type="button">
-          保存して次へ
-        </Button>
+        {!isCameraMode && (
+          <Button disabled={isCameraMode} onClick={saveCanvas} type="button">
+            保存して次へ
+          </Button>
+        )}
       </div>
 
       <div className="relative mx-auto mt-10 aspect-square size-[300px] flex-1 overflow-hidden rounded-full border-2">
