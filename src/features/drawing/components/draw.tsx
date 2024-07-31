@@ -188,11 +188,13 @@ export function Draw({ setResult }: DrawingCanvasProps) {
           ref={videoRef}
           autoPlay
           className={cn(
-            "size-full object-cover absolute inset-0 bg-white",
+            "object-cover size-[300px] absolute inset-0 bg-white",
             isCameraMode ? "z-20" : "-z-10"
           )}
+          height={300}
           muted
           playsInline
+          width={300}
         />
         <div
           ref={sketchRef}

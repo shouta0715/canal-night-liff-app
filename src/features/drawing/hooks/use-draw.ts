@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import p5 from "p5";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { useP5 } from "@/features/drawing/hooks/use-p5";
@@ -80,28 +79,48 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     setIsCameraMode(false);
   };
 
-  const drawImageOnCanvas = (image: p5.Image) => {
-    if (!p) return;
-    p.image(image, 0, 0, p.width, p.height);
-  };
-
   const handleTakePhoto = () => {
     const video = videoRef.current;
 
     if (!video) return;
     if (!p) return;
 
+    const { videoWidth, videoHeight } = video;
+
     const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width = p.width;
+    canvas.height = p.height;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // アスペクト比を計算
+    const videoAspect = videoWidth / videoHeight;
+    const canvasAspect = canvas.width / canvas.height;
+
+    let sx;
+    let sy;
+    let sw;
+    let sh;
+
+    if (videoAspect > canvasAspect) {
+      // ビデオが横長の場合、横幅を合わせて垂直方向を切り取る
+      sw = videoHeight * canvasAspect;
+      sh = videoHeight;
+      sx = (videoWidth - sw) / 2;
+      sy = 0;
+    } else {
+      // ビデオが縦長の場合、高さを合わせて水平方向を切り取る
+      sw = videoWidth;
+      sh = videoWidth / canvasAspect;
+      sx = 0;
+      sy = (videoHeight - sh) / 2;
+    }
+
+    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
     const dataUrl = canvas.toDataURL("image/png");
 
     p.loadImage(dataUrl, (img) => {
-      drawImageOnCanvas(img);
+      p.image(img, 0, 0, canvas.width, canvas.height);
     });
 
     stopCamera();
