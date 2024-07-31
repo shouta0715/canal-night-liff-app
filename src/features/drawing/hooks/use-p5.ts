@@ -4,12 +4,17 @@ import { useEffect, useRef, useState } from "react";
 
 type Tool = "pen" | "eraser" | "camera";
 
+const weightList = [6, 10, 14, 18, 22];
+
 export function useP5() {
   const sketchRef = useRef<HTMLDivElement>(null);
   const [tool, setTool] = useState<Tool>("pen");
   const toolRef = useRef<Tool>("pen");
   const colorRef = useRef("#000000");
   const pI = useRef<p5 | null>(null);
+  const isOpenRef = useRef(false);
+  const [weight, setWeight] = useState(14);
+  const weightRef = useRef(14);
 
   const [, setHasP5Instance] = useState(false);
 
@@ -23,13 +28,14 @@ export function useP5() {
         y2: number
       ) => {
         const color = colorRef.current;
+        const w = weightRef.current;
 
         if (to === "eraser") {
           p.stroke(255);
-          p.strokeWeight(20);
+          p.strokeWeight(w);
         } else {
           p.stroke(color);
-          p.strokeWeight(6);
+          p.strokeWeight(w);
         }
         p.line(x1, y1, x2, y2);
       };
@@ -46,19 +52,22 @@ export function useP5() {
 
       p.draw = () => {
         if (!p.mouseIsPressed) return;
+        if (isOpenRef.current) return;
         const to = toolRef.current;
+        const w = weightRef.current;
 
         if (to === "eraser") {
           p.stroke(255);
-          p.strokeWeight(20);
+          p.strokeWeight(w);
         } else {
           p.stroke(colorRef.current);
-          p.strokeWeight(6);
+          p.strokeWeight(w);
         }
         p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
       };
 
       p.touchMoved = () => {
+        if (isOpenRef.current) return true;
         for (const touch of p.touches) {
           const t = touch as unknown as { x: number; y: number };
           drawLine(toolRef.current, t.x, t.y, t.x, t.y);
@@ -104,6 +113,17 @@ export function useP5() {
     pI.current?.background(255);
   };
 
+  const onOpenChange = (isOpen: boolean) => {
+    isOpenRef.current = isOpen;
+  };
+
+  const onWeightChange = (w: string) => {
+    const num = parseInt(w, 10);
+    if (Number.isNaN(num)) return;
+    weightRef.current = num;
+    setWeight(num);
+  };
+
   return {
     sketchRef,
     setColor,
@@ -114,5 +134,9 @@ export function useP5() {
     changeTool,
     getCanvas,
     clearCanvas,
+    onOpenChange,
+    onWeightChange,
+    weight,
+    weightList,
   };
 }

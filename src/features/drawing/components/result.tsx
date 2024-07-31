@@ -35,21 +35,22 @@ export const DrawResult = ({ result, onClear }: ResultCanvasProps) => {
         />
       </motion.div>
 
-      <div className="absolute right-10 top-0 mt-10 flex items-center gap-6">
+      <div className="absolute right-10 top-0 mt-10 flex items-center gap-2">
         <p className="text-xs font-bold">
           ボールをしたにひっぱってボールをとばせ！
         </p>
         <Button
           disabled={isPending || isSuccess}
           onClick={onClear}
+          size="sm"
           variant="destructive"
         >
-          {isPending ? "アップロード中" : "書き直す"}
+          {isPending ? "アップロードちゅう..." : "かきなおす"}
         </Button>
       </div>
       {isSuccess && (
         <Button className="mt-6" onClick={onClear}>
-          もう一度書く
+          もういちどかく
         </Button>
       )}
     </div>

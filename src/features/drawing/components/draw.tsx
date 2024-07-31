@@ -1,4 +1,4 @@
-import { Eraser, Pen, Trash } from "lucide-react";
+import { ArrowUpRight, Eraser, Pen, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -30,21 +30,55 @@ export function Draw({ setResult }: DrawingCanvasProps) {
     bollColor,
     changeColor,
     rgbs,
+    onOpenChange,
+    weight,
+    onWeightChange,
+    weightList,
   } = useDrawing({ setResult });
 
   return (
     <div className="flex flex-col px-2 py-4">
       <div className="grid items-center justify-center gap-4">
         <div className="flex items-center justify-between space-x-2">
-          <Button
-            className="flex items-center gap-2"
-            disabled={isCameraMode}
-            onClick={clearCanvas}
-            size="icon"
-            variant="destructive"
+          <Select
+            defaultValue={weight.toString()}
+            onOpenChange={onOpenChange}
+            onValueChange={onWeightChange}
           >
-            <Trash size={16} />
-          </Button>
+            <SelectTrigger
+              className="size-10 items-center justify-center border-border p-0"
+              showArrow={false}
+            >
+              <SelectValue
+                placeholder={
+                  <div
+                    className="rounded-full bg-primary"
+                    style={{
+                      width: `${weight}px`,
+                      height: `${weight}px`,
+                    }}
+                  />
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {weightList.map((w) => (
+                <SelectItem
+                  key={w}
+                  className="h-10 items-center justify-center pl-2"
+                  value={w.toString()}
+                >
+                  <div
+                    className="rounded-full bg-primary "
+                    style={{
+                      width: `${w}px`,
+                      height: `${w}px`,
+                    }}
+                  />
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Button
             className="flex items-center gap-2"
             disabled={isCameraMode}
@@ -63,7 +97,7 @@ export function Draw({ setResult }: DrawingCanvasProps) {
             variant={tool === "eraser" ? "default" : "outline"}
           >
             <Eraser size={16} />
-            消しゴム
+            けしゴム
           </Button>
           <input
             className="size-12"
@@ -75,45 +109,67 @@ export function Draw({ setResult }: DrawingCanvasProps) {
         {isCameraMode && (
           <div className="flex items-center justify-between space-x-2">
             <Button onClick={handleTakePhoto} type="button">
-              写真を撮る
+              しゃしんをとる
             </Button>
             <Button onClick={changeFacingMode} type="button">
-              カメラの向きを変える
+              カメラのむきをかえる
             </Button>
           </div>
         )}
 
-        <div>
+        <div className="flex gap-2">
           <Button
-            className="w-full"
+            className="flex-1"
             onClick={changeCameraMode}
             type="button"
-            variant={isCameraMode ? "default" : "outline"}
+            variant="outline"
           >
-            {isCameraMode
-              ? "手書きモードに切り替える"
-              : "カメラモードに切り替える"}
+            {isCameraMode ? "てがきモードへ" : "カメラモードへ"}
+          </Button>
+          <Button
+            className="flex items-center gap-2"
+            disabled={isCameraMode}
+            onClick={clearCanvas}
+            size="icon"
+            variant="destructive"
+          >
+            <Trash size={16} />
           </Button>
         </div>
 
         {!isCameraMode && (
           <div className="flex items-center gap-2">
             <Button
-              className="flex-1"
+              className="flex-1 gap-1"
               disabled={isCameraMode}
               onClick={saveCanvas}
               type="button"
             >
-              保存して次へ
+              とうこうページへ
+              <ArrowUpRight size={16} />
             </Button>
             <div>
-              <Select onValueChange={changeColor}>
-                <SelectTrigger className="w-28">
-                  <SelectValue placeholder="ボールの色" />
+              <Select
+                defaultValue={bollColor}
+                onOpenChange={onOpenChange}
+                onValueChange={changeColor}
+              >
+                <SelectTrigger className="w-36 items-center border-border">
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs">ボールのいろ</span>
+                    <div
+                      className="size-4 rounded-full"
+                      style={{ backgroundColor: `rgba(${bollColor},1)` }}
+                    />
+                  </div>
                 </SelectTrigger>
                 <SelectContent className="max-h-52">
                   {rgbs.map((rgb) => (
-                    <SelectItem key={rgb} value={rgb}>
+                    <SelectItem
+                      key={rgb}
+                      className="items-center justify-center pl-2"
+                      value={rgb}
+                    >
                       <div
                         className="size-6 rounded-full"
                         style={{ backgroundColor: `rgba(${rgb},1)` }}

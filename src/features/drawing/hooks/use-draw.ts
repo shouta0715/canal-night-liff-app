@@ -56,7 +56,12 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     getCanvas,
     changeTool,
     clearCanvas,
+    onOpenChange,
+    weight,
+    onWeightChange,
+    weightList,
   } = useP5();
+
   const facingMode = useRef<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraMode, setIsCameraMode] = useState(false);
@@ -226,5 +231,9 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     changeColor,
     bollColor,
     rgbs,
+    onOpenChange,
+    onWeightChange,
+    weight,
+    weightList,
   };
 };
