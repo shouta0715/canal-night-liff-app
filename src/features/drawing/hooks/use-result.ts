@@ -41,11 +41,11 @@ export function useResult({ result }: UseResultProps) {
   const { mutateAsync, isPending, isSuccess } = useMutation({
     mutationFn: postBlob,
     onError: () => {
-      toast.error("アップロードに失敗しました");
+      toast.error("アップロードできませんでした。");
       onReset();
     },
     onSuccess: () => {
-      toast.success("アップロードしました");
+      toast.success("アップロードしました！");
     },
   });
 
