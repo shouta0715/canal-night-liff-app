@@ -25,14 +25,45 @@ const rgbs = [
   "255, 165, 0",
   // Pink
   "255, 192, 203",
+
+  // Light Green
+  "144, 238, 144",
+
+  // Light Blue
+  "173, 216, 230",
+
+  // Light Yellow
+  "255, 255, 224",
+
+  // Light Purple
+  "221, 160, 221",
+
+  // Light Cyan
+  "224, 255, 255",
+
+  // Light Orange
+  "255, 218, 185",
 ];
 
 export const useDrawing = ({ setResult }: UseDrawing) => {
-  const { p, sketchRef, tool, color, setColor, setTool, getCanvas } = useP5();
+  const {
+    p,
+    sketchRef,
+    tool,
+    color,
+    setColor,
+    setTool,
+    getCanvas,
+    changeTool,
+    clearCanvas,
+  } = useP5();
   const facingMode = useRef<"user" | "environment">("user");
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraMode, setIsCameraMode] = useState(false);
   const streamRef = useRef<MediaStream | null>(null);
+  const [bollColor, setBollColor] = useState(
+    () => rgbs[Math.floor(Math.random() * rgbs.length)]
+  );
 
   const stopCamera = () => {
     streamRef.current?.getTracks().forEach((track) => {
@@ -109,9 +140,10 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     });
   };
 
-  const applyGlowEffect = (rgb: string, diameter: number) => {
+  const applyGlowEffect = (diameter: number) => {
     if (!p) return;
     const radius = diameter / 2;
+    const rgb = bollColor || rgbs[Math.floor(Math.random() * rgbs.length)];
     const gradient = p.drawingContext.createRadialGradient(
       p.width / 2,
       p.height / 2,
@@ -135,8 +167,8 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
   const saveCanvas = () => {
     if (!p) return;
     const size = 310;
-    const rgb = rgbs[Math.floor(Math.random() * rgbs.length)];
-    applyGlowEffect(rgb, size);
+
+    applyGlowEffect(size);
 
     const canvas = getCanvas();
     if (!canvas) return;
@@ -171,6 +203,10 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     });
   };
 
+  const changeColor = (c: string) => {
+    setBollColor(c);
+  };
+
   return {
     sketchRef,
     videoRef,
@@ -185,5 +221,10 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     changeFacingMode,
     stopCamera,
     saveCanvas,
+    changeTool,
+    clearCanvas,
+    changeColor,
+    bollColor,
+    rgbs,
   };
 };

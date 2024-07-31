@@ -1,5 +1,12 @@
-import { Eraser, Pen } from "lucide-react";
+import { Eraser, Pen, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useDrawing } from "@/features/drawing/hooks/use-draw";
 import { cn } from "@/lib/utils";
 
@@ -12,23 +19,36 @@ export function Draw({ setResult }: DrawingCanvasProps) {
     sketchRef,
     videoRef,
     setColor,
-    setTool,
     handleTakePhoto,
     changeFacingMode,
     changeCameraMode,
     isCameraMode,
     tool,
     saveCanvas,
+    changeTool,
+    clearCanvas,
+    bollColor,
+    changeColor,
+    rgbs,
   } = useDrawing({ setResult });
 
   return (
-    <div className="flex flex-col p-5">
+    <div className="flex flex-col px-2 py-4">
       <div className="grid items-center justify-center gap-4">
         <div className="flex items-center justify-between space-x-2">
           <Button
             className="flex items-center gap-2"
             disabled={isCameraMode}
-            onClick={() => setTool("pen")}
+            onClick={clearCanvas}
+            size="icon"
+            variant="destructive"
+          >
+            <Trash size={16} />
+          </Button>
+          <Button
+            className="flex items-center gap-2"
+            disabled={isCameraMode}
+            onClick={() => changeTool("pen")}
             type="button"
             variant={tool === "pen" ? "default" : "outline"}
           >
@@ -38,7 +58,7 @@ export function Draw({ setResult }: DrawingCanvasProps) {
           <Button
             className="flex items-center gap-2"
             disabled={isCameraMode}
-            onClick={() => setTool("eraser")}
+            onClick={() => changeTool("eraser")}
             type="button"
             variant={tool === "eraser" ? "default" : "outline"}
           >
@@ -77,9 +97,33 @@ export function Draw({ setResult }: DrawingCanvasProps) {
         </div>
 
         {!isCameraMode && (
-          <Button disabled={isCameraMode} onClick={saveCanvas} type="button">
-            保存して次へ
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              className="flex-1"
+              disabled={isCameraMode}
+              onClick={saveCanvas}
+              type="button"
+            >
+              保存して次へ
+            </Button>
+            <div>
+              <Select onValueChange={changeColor}>
+                <SelectTrigger className="w-28">
+                  <SelectValue placeholder="ボールの色" />
+                </SelectTrigger>
+                <SelectContent className="max-h-52">
+                  {rgbs.map((rgb) => (
+                    <SelectItem key={rgb} value={rgb}>
+                      <div
+                        className="size-6 rounded-full"
+                        style={{ backgroundColor: `rgba(${rgb},1)` }}
+                      />
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         )}
       </div>
 
@@ -97,9 +141,14 @@ export function Draw({ setResult }: DrawingCanvasProps) {
         <div
           ref={sketchRef}
           className={cn(
-            "size-full [&>canvas]:object-cover inset-0 absolute [&>canvas]:size-full",
+            "size-full [&>canvas]:object-cover inset-0 absolute [&>canvas]:size-full [&>canvas]:border-[var(--color)] [&>canvas]:border-[6px] [&>canvas]:rounded-full",
             isCameraMode ? "-z-20" : "z-10"
           )}
+          style={
+            {
+              "--color": `rgba(${bollColor},1)`,
+            } as React.CSSProperties
+          }
         />
       </div>
     </div>
