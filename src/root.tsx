@@ -3,7 +3,7 @@ import "@/global.css";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { DrawingApp } from "@/features/drawing/components";
-import { Provider } from "@/providers";
+import { LineAuthProvider, Provider } from "@/providers";
 
 function App() {
   return (
@@ -23,9 +23,9 @@ function App() {
           }
         >
           <Suspense fallback={<p className="text-center">Lineに接続中...</p>}>
-            {/* <LineAuthProvider> */}
-            <DrawingApp />
-            {/* </LineAuthProvider> */}
+            <LineAuthProvider>
+              <DrawingApp />
+            </LineAuthProvider>
           </Suspense>
         </ErrorBoundary>
       </Provider>
