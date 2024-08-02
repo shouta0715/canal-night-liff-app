@@ -210,13 +210,15 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     newCtx.beginPath();
     newCtx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2, false);
     newCtx.clip();
+    newCtx.scale(-1, 1);
+
     newCtx.drawImage(
       canvas,
       0,
       0,
       canvas.width,
       canvas.height,
-      0,
+      -size,
       0,
       size,
       size
