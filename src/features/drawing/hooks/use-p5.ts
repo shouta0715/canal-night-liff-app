@@ -6,11 +6,65 @@ type Tool = "pen" | "eraser" | "camera";
 
 const weightList = [6, 10, 14, 18, 22];
 
+const defaultPenColors = [
+  // カラーコード
+  "#FF0000", // 赤
+  "#00FF00", // 緑
+  "#0000FF", // 青
+  "#FFFF00", // 黄
+  "#800080", // 紫
+  "#00FFFF", // 水
+  "#FFA500", // オレンジ
+  "#FFC0CB", // ピンク
+  "#90EE90", // ライトグリーン
+  "#ADD8E6", // ライトブルー
+  "#FFFFE0", // ライトイエロー
+  "#DDA0DD", // ライトパープル
+  "#E0FFFF", // ライトシアン
+  "#FFDAB9", // ライトオレンジ
+  "#000000", // 黒
+  "#FFFFFF", // 白
+  "#808080", // グレー
+  "#C0C0C0", // シルバー
+  "#800000", // マルーン
+  "#008000", // オリーブ
+  "#000080", // ネイビー
+  "#808000", // オリーブ
+  "#800080", // パープル
+  "#008080", // ティール
+  "#FF6347", // トマト
+  "#FF7F50", // コーラル
+  "#FFA07A", // ライトサーモン
+  "#FF4500", // オレンジレッド
+  "#FF8C00", // ダークオレンジ
+  "#FFA500", // オレンジ
+  "#FFD700", // ゴールド
+  "#FF69B4", // ホットピンク
+  "#FF1493", // ディープピンク
+  "#FFB6C1", // ライトピンク
+  "#FFC0CB", // ピンク
+  "#FFA07A", // ライトサーモン
+  "#FFA500", // オレンジ
+  "#FF6347", // トマト
+  "#FF4500", // オレンジレッド
+  "#FF8C00", // ダークオレンジ
+  "#FFD700", // ゴールド
+  "#FF69B4", // ホットピンク
+  "#FF1493", // ディープピンク
+  "#FFB6C1", // ライトピンク
+  "#FFC0CB", // ピンク
+  "#FFA07A", // ライトサーモン
+  "#FFA500", // オレンジ
+  "#FF6347", // トマト
+];
+
 export function useP5() {
   const sketchRef = useRef<HTMLDivElement>(null);
   const [tool, setTool] = useState<Tool>("pen");
   const toolRef = useRef<Tool>("pen");
-  const colorRef = useRef("#000000");
+  const colorRef = useRef(
+    defaultPenColors[Math.floor(Math.random() * defaultPenColors.length)]
+  );
   const pI = useRef<p5 | null>(null);
   const isOpenRef = useRef(false);
   const [weight, setWeight] = useState(14);

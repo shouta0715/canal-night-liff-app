@@ -34,6 +34,7 @@ export function Draw({ setResult }: DrawingCanvasProps) {
     weight,
     onWeightChange,
     weightList,
+    color,
   } = useDrawing({ setResult });
 
   return (
@@ -101,6 +102,7 @@ export function Draw({ setResult }: DrawingCanvasProps) {
           </Button>
           <input
             className="size-12"
+            defaultValue={color}
             disabled={tool === "eraser"}
             onChange={(e) => setColor(e.target.value)}
             type="color"
