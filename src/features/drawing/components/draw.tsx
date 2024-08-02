@@ -1,4 +1,4 @@
-import { ArrowUpRight, Eraser, Pen, Trash } from "lucide-react";
+import { ArrowUpRight, Camera, Eraser, Pen, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -110,7 +110,12 @@ export function Draw({ setResult }: DrawingCanvasProps) {
         </div>
         {isCameraMode && (
           <div className="flex items-center justify-between space-x-2">
-            <Button onClick={handleTakePhoto} type="button">
+            <Button
+              className="items-center gap-1"
+              onClick={handleTakePhoto}
+              type="button"
+            >
+              <Camera />
               しゃしんをとる
             </Button>
             <Button onClick={changeFacingMode} type="button">
