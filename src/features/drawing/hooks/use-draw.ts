@@ -158,10 +158,10 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
       p.height / 2,
       radius
     );
-    gradient.addColorStop(0, `rgba(${rgb}, 0.1)`);
-    gradient.addColorStop(0.3, `rgba(${rgb}, 0.3)`);
-    gradient.addColorStop(0.6, `rgba(${rgb}, 0.5)`);
-    gradient.addColorStop(0.8, `rgba(${rgb}, 0.7)`);
+    gradient.addColorStop(0, `rgba(${rgb}, 0)`);
+    gradient.addColorStop(0.3, `rgba(${rgb}, 0.1)`);
+    gradient.addColorStop(0.6, `rgba(${rgb}, 0.3)`);
+    gradient.addColorStop(0.8, `rgba(${rgb}, 0.5)`);
     // 黒に近づく
     gradient.addColorStop(1, `rgba(0, 0, 0, 1)`);
 
