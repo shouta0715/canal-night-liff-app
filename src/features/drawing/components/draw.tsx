@@ -1,11 +1,17 @@
-import { ArrowUpRight, Camera, Eraser, Pen, Trash } from "lucide-react";
+import {
+  ArrowUpRight,
+  Camera,
+  Eraser,
+  Pen,
+  RefreshCw,
+  Trash,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import { useDrawing } from "@/features/drawing/hooks/use-draw";
 import { cn } from "@/lib/utils";
@@ -31,9 +37,6 @@ export function Draw({ setResult }: DrawingCanvasProps) {
     changeColor,
     rgbs,
     onOpenChange,
-    weight,
-    onWeightChange,
-    weightList,
     color,
   } = useDrawing({ setResult });
 
@@ -41,45 +44,6 @@ export function Draw({ setResult }: DrawingCanvasProps) {
     <div className="flex flex-col px-2 py-4">
       <div className="grid items-center justify-center gap-4">
         <div className="flex items-center justify-between space-x-2">
-          <Select
-            defaultValue={weight.toString()}
-            onOpenChange={onOpenChange}
-            onValueChange={onWeightChange}
-          >
-            <SelectTrigger
-              className="size-10 items-center justify-center border-border p-0"
-              showArrow={false}
-            >
-              <SelectValue
-                placeholder={
-                  <div
-                    className="rounded-full bg-primary"
-                    style={{
-                      width: `${weight}px`,
-                      height: `${weight}px`,
-                    }}
-                  />
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {weightList.map((w) => (
-                <SelectItem
-                  key={w}
-                  className="h-10 items-center justify-center pl-2"
-                  value={w.toString()}
-                >
-                  <div
-                    className="rounded-full bg-primary "
-                    style={{
-                      width: `${w}px`,
-                      height: `${w}px`,
-                    }}
-                  />
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
           <Button
             className="flex items-center gap-2"
             disabled={isCameraMode}
@@ -110,16 +74,17 @@ export function Draw({ setResult }: DrawingCanvasProps) {
         </div>
         {isCameraMode && (
           <div className="flex items-center justify-between space-x-2">
+            <Button onClick={changeFacingMode} size="icon" type="button">
+              <RefreshCw />
+              <span className="sr-only">カメラのむきをかえる</span>
+            </Button>
             <Button
-              className="items-center gap-1"
+              className="flex-1 items-center gap-1"
               onClick={handleTakePhoto}
               type="button"
             >
               <Camera />
               しゃしんをとる
-            </Button>
-            <Button onClick={changeFacingMode} type="button">
-              カメラのむきをかえる
             </Button>
           </div>
         )}
@@ -146,15 +111,6 @@ export function Draw({ setResult }: DrawingCanvasProps) {
 
         {!isCameraMode && (
           <div className="flex items-center gap-2">
-            <Button
-              className="flex-1 gap-1"
-              disabled={isCameraMode}
-              onClick={saveCanvas}
-              type="button"
-            >
-              とうこうページへ
-              <ArrowUpRight size={16} />
-            </Button>
             <div>
               <Select
                 defaultValue={bollColor}
@@ -186,6 +142,15 @@ export function Draw({ setResult }: DrawingCanvasProps) {
                 </SelectContent>
               </Select>
             </div>
+            <Button
+              className="flex-1 gap-1"
+              disabled={isCameraMode}
+              onClick={saveCanvas}
+              type="button"
+            >
+              とうこうページへ
+              <ArrowUpRight size={16} />
+            </Button>
           </div>
         )}
       </div>

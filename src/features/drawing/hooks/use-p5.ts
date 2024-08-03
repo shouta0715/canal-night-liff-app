@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 type Tool = "pen" | "eraser" | "camera";
 
-const weightList = [6, 10, 14, 18, 22];
-
 const defaultPenColors = [
   // カラーコード
   "#FF0000", // 赤
@@ -67,8 +65,6 @@ export function useP5() {
   );
   const pI = useRef<p5 | null>(null);
   const isOpenRef = useRef(false);
-  const [weight, setWeight] = useState(14);
-  const weightRef = useRef(14);
 
   const [, setHasP5Instance] = useState(false);
 
@@ -82,11 +78,11 @@ export function useP5() {
         y2: number
       ) => {
         const color = colorRef.current;
-        const w = weightRef.current;
+        const w = 14;
 
         if (to === "eraser") {
           p.stroke(255);
-          p.strokeWeight(w);
+          p.strokeWeight(20);
         } else {
           p.stroke(color);
           p.strokeWeight(w);
@@ -108,11 +104,11 @@ export function useP5() {
         if (!p.mouseIsPressed) return;
         if (isOpenRef.current) return;
         const to = toolRef.current;
-        const w = weightRef.current;
+        const w = 14;
 
         if (to === "eraser") {
           p.stroke(255);
-          p.strokeWeight(w);
+          p.strokeWeight(20);
         } else {
           p.stroke(colorRef.current);
           p.strokeWeight(w);
@@ -171,13 +167,6 @@ export function useP5() {
     isOpenRef.current = isOpen;
   };
 
-  const onWeightChange = (w: string) => {
-    const num = parseInt(w, 10);
-    if (Number.isNaN(num)) return;
-    weightRef.current = num;
-    setWeight(num);
-  };
-
   return {
     sketchRef,
     setColor,
@@ -189,8 +178,5 @@ export function useP5() {
     getCanvas,
     clearCanvas,
     onOpenChange,
-    onWeightChange,
-    weight,
-    weightList,
   };
 }

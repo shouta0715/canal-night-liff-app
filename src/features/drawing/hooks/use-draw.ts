@@ -38,9 +38,6 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     changeTool,
     clearCanvas,
     onOpenChange,
-    weight,
-    onWeightChange,
-    weightList,
   } = useP5();
 
   const facingMode = useRef<"user" | "environment">("user");
@@ -184,17 +181,21 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     newCanvas.width = size;
     newCanvas.height = size;
     const newCtx = newCanvas.getContext("2d");
+
     if (!newCtx) return;
+
     newCtx.clearRect(0, 0, size, size);
     newCtx.fillStyle = "white";
 
     // 黒で塗りつぶし
     newCtx.fillStyle = "black";
+
     newCtx.beginPath();
     newCtx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2, false);
     newCtx.clip();
     newCtx.scale(-1, 1);
 
+    canvas.style.borderColor = "black";
     newCtx.drawImage(
       canvas,
       0,
@@ -236,8 +237,5 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
     bollColor,
     rgbs,
     onOpenChange,
-    onWeightChange,
-    weight,
-    weightList,
   };
 };
