@@ -24,24 +24,6 @@ const rgbs = [
   "255, 165, 0",
   // Pink
   "255, 192, 203",
-
-  // Light Green
-  "144, 238, 144",
-
-  // Light Blue
-  "173, 216, 230",
-
-  // Light Yellow
-  "255, 255, 224",
-
-  // Light Purple
-  "221, 160, 221",
-
-  // Light Cyan
-  "224, 255, 255",
-
-  // Light Orange
-  "255, 218, 185",
 ];
 
 export const useDrawing = ({ setResult }: UseDrawing) => {
@@ -176,9 +158,10 @@ export const useDrawing = ({ setResult }: UseDrawing) => {
       p.height / 2,
       radius
     );
-    gradient.addColorStop(0, `rgba(${rgb}, 0.7)`);
-    gradient.addColorStop(0.4, `rgba(${rgb}, 0.5)`);
-    gradient.addColorStop(0.7, `rgba(${rgb}, 0.3)`);
+    gradient.addColorStop(0, `rgba(${rgb}, 0.1)`);
+    gradient.addColorStop(0.3, `rgba(${rgb}, 0.3)`);
+    gradient.addColorStop(0.6, `rgba(${rgb}, 0.5)`);
+    gradient.addColorStop(0.8, `rgba(${rgb}, 0.7)`);
     // 黒に近づく
     gradient.addColorStop(1, `rgba(0, 0, 0, 1)`);
 
